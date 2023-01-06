@@ -21,7 +21,7 @@ setuptools==59.6.0
 sudo apt-get install postgresql 
 ```
 
-### Step 2: clone repository.
+### Step 2: Clone repository.
 ```
 path/to/folder
 git clone git@github.com:LaskiKa/Booking-conference-room-app.git
@@ -48,8 +48,9 @@ DATABASES = {
     }
 }
 ```
+**USER & PASSWORD depend on your PostgreSQL configuration**
 
-### Step 5: run server.
+### Step 5: Run server.
 ```
 python manage.py makemigrations
 python manage.py migrate
@@ -57,7 +58,7 @@ python manage.py runserver localhost:8000
 ```
 
 ## Application functions:
-
+*On first run there is no room in database. Create some rooms and list will be update*
 1. main site - all conference rooms list - http://127.0.0.1:8000/room/
 - View of all meeting rooms with **today's availability status**
 - Room name is link for more details
