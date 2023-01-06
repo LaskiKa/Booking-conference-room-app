@@ -80,8 +80,8 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'NAME': 'booking_conf_rooms_db',
         'ENGINE': 'django.db.backends.postgresql',
-        'USER': '',
-        'PASSWORD': '',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
     }
 }
 

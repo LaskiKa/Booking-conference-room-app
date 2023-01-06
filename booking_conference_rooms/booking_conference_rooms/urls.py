@@ -20,11 +20,11 @@ from booking.views import main, add_new_room, delete, modify, reserve, room_deta
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('room/', main),
-    path('room/new/', add_new_room),
-    re_path('room/(?P<id>(\d)+)/', room_details),
-    re_path('room/delete/(?P<id>(\d)+)/', delete),
-    re_path('room/modify/(?P<id>(\d)+)/', modify),
-    re_path('room/reserve/(?P<id>(\d)+)/', reserve),
+    path('room/', main.as_view()),
+    path('room/new/', add_new_room.as_view()),
+    re_path('room/(?P<id>(\d)+)/', room_details.as_view()),
+    re_path('room/delete/(?P<id>(\d)+)/', delete.as_view()),
+    re_path('room/modify/(?P<id>(\d)+)/', modify.as_view()),
+    re_path('room/reserve/(?P<id>(\d)+)/', reserve.as_view()),
 
 ]

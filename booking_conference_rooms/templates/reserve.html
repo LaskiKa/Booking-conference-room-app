@@ -24,7 +24,7 @@
     <form class="resreve_room" method="post" action="">
         {% csrf_token %}
         <label>Reserve date:</label><br>
-        <input class="resreve_room" name="reserve_date" type="date" min="{{min_date}}"/><br>
+        <input class="resreve_room" name="reserve_date" type="date" min="{{min_date}}" value="{{ min_date }}"/><br>
         <label>Comments:</label><br>
         <input class="resreve_room" name="comments" type="text" maxlength="255" value=""/><br>
         <button class="resreve_room" type="submit" name="submit" value="">Reserve</button>

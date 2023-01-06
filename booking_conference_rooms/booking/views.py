@@ -1,38 +1,35 @@
 from django.shortcuts import render
 from booking.models import Room, RoomBooking
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.views import View
 from django.views.decorators.csrf import csrf_protect
 from datetime import date
 
 
-# Create your views here.
+class main(View):
+    def get(self, request):
+        today = date.today()
+        all_rooms = Room.objects.all().order_by('id')
+        reserved_rooms_id = []
 
-def main(request):
-    today = date.today()
-    all_rooms = Room.objects.all().order_by('id')
-    reserved_rooms_id = []
+        'Today booked rooms list'
+        reservations = RoomBooking.objects.filter(booking_date=str(date.today()))
+        for reservation in reservations:
+            reserved_rooms_id.append(reservation.room_id.id)
 
-    'Today booked rooms list'
-    reservations = RoomBooking.objects.filter(booking_date = str(date.today()))
-    for reservation in reservations:
-        reserved_rooms_id.append(reservation.room_id.id)
-
-    return render(request,
-                  'main.html',
-                  context=({'rooms': all_rooms,
-                           'reserved_rooms_id': reserved_rooms_id,
-                            'today': today}))
-
+        return render(request,
+                      'main.html',
+                      context=({'rooms': all_rooms,
+                                'reserved_rooms_id': reserved_rooms_id,
+                                'today': today}))
 
 
-@csrf_protect
-def add_new_room(request):
-    if request.method == "GET":
+class add_new_room(View):
+    def get(self, request):
         return render(request,
                       'add_new_room.html', )
 
-    elif request.method == "POST":
+    def post(self, request):
         all_rooms = Room.objects.all()
         room_name = request.POST.get('room_name')
         seats_number = request.POST.get('seats_number')
@@ -60,24 +57,30 @@ def add_new_room(request):
         return HttpResponseRedirect('/room')
 
 
-def delete(request, id):
-    room = Room.objects.get(pk=id)
-    room.delete()
-    return HttpResponseRedirect('/room')
+class delete(View):
+    def get(self, request, id):
+        room = Room.objects.get(pk=id)
+        room.delete()
+        return HttpResponseRedirect('/room')
 
 
-def modify(request, id):
-    room = Room.objects.get(pk=id)
-    ctx = {'room_name': room.room_name,
-           'seats_number': room.seats_number,
-           'projector': room.projector}
+class modify(View):
 
-    if request.method == "GET":
+    def get(self, request, id):
+        room = Room.objects.get(pk=id)
+        ctx = {'room_name': room.room_name,
+               'seats_number': room.seats_number,
+               'projector': room.projector}
+
         return render(request,
                       'modify.html',
                       context=(ctx))
 
-    elif request.method == "POST":
+    def post(self, request, id):
+        room = Room.objects.get(pk=id)
+        ctx = {'room_name': room.room_name,
+               'seats_number': room.seats_number,
+               'projector': room.projector}
         all_rooms = Room.objects.exclude(pk=id)
         room_name = request.POST.get('room_name')
         seats_number = request.POST.get('seats_number')
@@ -110,16 +113,22 @@ def modify(request, id):
         return HttpResponseRedirect('/room')
 
 
-def reserve(request, id):
-    room = Room.objects.get(pk=id)
-    ctx = {'min_date': str(date.today()),
-           'room_name': room.room_name, }
-    if request.method == "GET":
+class reserve(View):
+
+    def get(self, request, id):
+        room = Room.objects.get(pk=id)
+        ctx = {'min_date': str(date.today()),
+               'room_name': room.room_name, }
+
         return render(request,
                       'reserve.html',
                       context=(ctx))
 
-    if request.method == "POST":
+    def post(self, request, id):
+        room = Room.objects.get(pk=id)
+        ctx = {'min_date': str(date.today()),
+               'room_name': room.room_name, }
+
         date_to_reserve = str(request.POST.get('reserve_date'))
         comments = request.POST.get('comments')
         room_reservations = RoomBooking.objects.filter(room_id=id)
@@ -135,14 +144,15 @@ def reserve(request, id):
         return HttpResponseRedirect('/room')
 
 
-def room_details(request, id):
-    room = Room.objects.get(pk=id)
-    reservations = RoomBooking.objects.filter(room_id=id).order_by('booking_date')
-    ctx = {'room_name': room.room_name,
-           'seats_number': room.seats_number,
-           'projector': room.projector,
-           'reservations': reservations,
-           'id': id}
-    return render(request,
-                  'room_details.html',
-                  context=(ctx))
+class room_details(View):
+    def get(self, request, id):
+        room = Room.objects.get(pk=id)
+        reservations = RoomBooking.objects.filter(room_id=id).order_by('booking_date')
+        ctx = {'room_name': room.room_name,
+               'seats_number': room.seats_number,
+               'projector': room.projector,
+               'reservations': reservations,
+               'id': id}
+        return render(request,
+                      'room_details.html',
+                      context=(ctx))
