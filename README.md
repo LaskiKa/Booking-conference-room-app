@@ -43,8 +43,8 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'NAME': 'booking_conf_rooms_db',
         'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'postgres',  
-        'PASSWORD': 'postgres',
+        'USER': '',  
+        'PASSWORD': '',
     }
 }
 ```
@@ -54,10 +54,12 @@ DATABASES = {
 ```
 python manage.py makemigrations
 python manage.py migrate
+python manage.py create superuser
 python manage.py runserver localhost:8000
 ```
 
 ## Application functions:
+
 *On first run there is no room in database. Create some rooms and list will be update*
 1. main site - all conference rooms list - http://127.0.0.1:8000/room/
 - View of all meeting rooms with **today's availability status**
@@ -114,3 +116,8 @@ python manage.py runserver localhost:8000
 6. Conference room search - ongoing. Need time to finish view :)
 
 
+7. *Admin view* - http://127.0.0.1:8000/admin/
+
+- Basic admin access to booking conference room app.
+
+![img_5.png](img/img_5.png)
